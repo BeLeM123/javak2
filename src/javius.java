@@ -452,10 +452,10 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
             if(x1 <= this.getWidth() - w1)
                 x1 += 10;
         }
-        if(x1 >= x && x1 <= (x + w) - 1              && y1 >= y && y1 <= (y + 8 * my) - 1 ||
-                x1 + w >= x + 1 && x1 + w <= (x + w) - 1  && y1 >= y && y1 <= (y + 8 * my) - 1 ||
-                x1 >= x && x1 <= (x + w) - 1              && y1 + 8 * my >= y + 1 && y1 + 8 * my <= (y + 8 * my) ||
-                x1 + w >= x +1 && x1 + w <= (x + w) - 1   && y1 + 8 * my >= y + 1 && y1 + 8 * my <= (y + 8 * my)) {
+        if(x1 >= x && x1 <= (x + w) - 1  && y1 >= y && y1 <= (y + 8 * my) - 1 ||
+        x1 + w >= x + 1 && x1 + w <= (x + w) - 1 && y1 >= y && y1 <= (y + 8 * my) - 1 ||
+        x1 >= x && x1 <= (x + w) - 1 && y1 + 8 * my >= y + 1 && y1 + 8 * my <= (y + 8 * my) ||
+        x1 + w >= x +1 && x1 + w <= (x + w) - 1 && y1 + 8 * my >= y + 1 && y1 + 8 * my <= (y + 8 * my)) {
             s = Color.white;
             k = Color.green;
             o = Color.blue;

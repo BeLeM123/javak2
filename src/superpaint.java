@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 public class superpaint extends Applet implements ActionListener, MouseMotionListener, MouseListener {
     private int last_x, last_y, last_x1, last_y1;
-    Button red,white,blue,black,yellow,green,purple,cyan,orange,gray,getrekt,oval,line;
+    Button red,white,blue,black,yellow,green,purple,cyan,orange,gray,getrekt,oval,line, fgetrekt, foval;
     Color c;
     int act;
 
@@ -24,6 +24,8 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
         gray = new Button("");
         getrekt = new Button("rect");
         oval = new Button("ellips");
+        fgetrekt = new Button("frect");
+        foval = new Button("fellips");
         line = new Button("line");
 
         setLayout(null);
@@ -40,6 +42,8 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
         getrekt.setBounds(10,240,40,40);
         oval.setBounds(55,240,40,40);
         line.setBounds(10,280,85,20);
+        fgetrekt.setBounds(10,300,40,40);
+        foval.setBounds(55, 300,40,40);
 
         add(red);
         add(white);
@@ -53,6 +57,8 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
         add(gray);
         add(getrekt);
         add(oval);
+        add(fgetrekt);
+        add(foval);
         add(line);
 
         red.addActionListener(this);
@@ -67,6 +73,8 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
         gray.addActionListener(this);
         getrekt.addActionListener(this);
         oval.addActionListener(this);
+        fgetrekt.addActionListener(this);
+        foval.addActionListener(this);
         line.addActionListener(this);
 
         red.setBackground(Color.red);
@@ -115,6 +123,16 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
             g.setColor(c);
             g.drawOval(last_x, last_y, last_x1 - last_x, last_y1 - last_y);
         }
+        else if (act==5) {
+            Graphics g = getGraphics();
+            g.setColor(c);
+            g.fillOval(last_x, last_y, last_x1 - last_x, last_y1 - last_y);
+        }
+        else if (act==4) {
+            Graphics g = getGraphics();
+            g.setColor(c);
+            g.fillRect(last_x, last_y, last_x1 - last_x, last_y1 - last_y);
+        }
     }
     public void mouseEntered(MouseEvent me){}
     public void mousePressed(MouseEvent me){
@@ -132,5 +150,9 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
             act=2;
         else if (((Button) ae.getSource()).getLabel().equals("ellips"))
             act=3;
+        else if (((Button) ae.getSource()).getLabel().equals("frect"))
+            act=4;
+        else if (((Button) ae.getSource()).getLabel().equals("fellips"))
+            act=5;
     }
 }
