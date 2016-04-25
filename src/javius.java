@@ -467,6 +467,13 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
             o = Color.blue;
         }
         repaint();
+
+
+
+
+
+
+
     }
 
     public void keyReleased(KeyEvent ke) {
