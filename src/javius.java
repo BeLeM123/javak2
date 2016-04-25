@@ -456,24 +456,17 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
             ((x1 + w / 2 >= x + 1 && x1 + w / 2 <= x + w - 1) && (y1 >= y && y1 <= y + 8 * my - 1)) ||
             ((x1 >= x + 1 && x1 <= x + w - 1) && (y1 + h / 2 >= y + 1 && y1 + h / 2 <= y + 8 * my - 1)) ||
             ((x1 + w / 2 >= x + 1 && x1 + w / 2 <= x + w - 1) && (y1 + h / 2 >= y + 1 && y1 + h / 2 <= y + 8 * my - 1))) {
-            s = Color.red;
-            k = Color.red;
-            o = Color.yellow;
+            s = Color.white;
+            k = Color.green;
+            o = Color.blue;
         }
         else
         {
             s = Color.red;
             k = Color.red;
-            o = Color.blue;
+            o = Color.yellow;
         }
         repaint();
-
-
-
-
-
-
-
     }
 
     public void keyReleased(KeyEvent ke) {
