@@ -4,7 +4,7 @@ import java.awt.event.*;
 
 public class superpaint extends Applet implements ActionListener, MouseMotionListener, MouseListener {
     private int last_x, last_y, last_x1, last_y1;
-    Button red,white,blue,black,yellow,green,purple,cyan,orange,gray,getrekt,oval,line, fgetrekt, foval;
+    Button red,white,blue,black,yellow,green,purple,cyan,orange,gray,getrekt,oval,line, fgetrekt, foval, clear;
     Color c;
     int act;
 
@@ -27,6 +27,7 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
         fgetrekt = new Button("frect");
         foval = new Button("fellips");
         line = new Button("line");
+        clear = new Button("clear");
 
         setLayout(null);
         white.setBounds(10,10,40,40);
@@ -43,7 +44,8 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
         oval.setBounds(55,240,40,40);
         line.setBounds(10,280,85,20);
         fgetrekt.setBounds(10,300,40,40);
-        foval.setBounds(55, 300,40,40);
+        foval.setBounds(55,300,40,40);
+        clear.setBounds(10,340,85,40);
 
         add(red);
         add(white);
@@ -60,6 +62,7 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
         add(fgetrekt);
         add(foval);
         add(line);
+        add(clear);
 
         red.addActionListener(this);
         white.addActionListener(this);
@@ -76,6 +79,7 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
         fgetrekt.addActionListener(this);
         foval.addActionListener(this);
         line.addActionListener(this);
+        clear.addActionListener(this);
 
         red.setBackground(Color.red);
         white.setBackground(Color.white);
@@ -143,6 +147,7 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
     public void mouseClicked(MouseEvent me) {}
 
     public void actionPerformed(ActionEvent ae) {
+        String str = ae.getActionCommand();
         c = ((Button) ae.getSource()).getBackground();
         if (((Button) ae.getSource()).getLabel().equals("line"))
             act=1;
@@ -154,5 +159,9 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
             act=4;
         else if (((Button) ae.getSource()).getLabel().equals("fellips"))
             act=5;
+        else if (str.equals("clear"))
+        {
+            repaint();
+        }
     }
 }
