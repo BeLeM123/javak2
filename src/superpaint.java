@@ -1,14 +1,24 @@
 import java.awt.*;
 import java.applet.*;
 import java.awt.event.*;
+import java.awt.geom.Line2D;
+import java.util.Objects;
 
 public class superpaint extends Applet implements ActionListener, MouseMotionListener, MouseListener {
     private int last_x, last_y, last_x1, last_y1;
     Button red,white,blue,black,yellow,green,purple,cyan,orange,gray,getrekt,oval,line, fgetrekt, foval, clear;
     Color c;
-    int act;
+    int act, pen1;
+    private List spisok;
 
     public void init() {
+
+        spisok = new List(4, false);
+        spisok.add("1");
+        spisok.add("5");
+        spisok.add("10");
+        spisok.add("20");
+
         act = 1;
         setBackground(new Color(20,100,100));
         c=Color.red;
@@ -46,6 +56,7 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
         fgetrekt.setBounds(10,300,40,40);
         foval.setBounds(55,300,40,40);
         clear.setBounds(10,340,85,40);
+        spisok.setBounds(100,10,20,65);
 
         add(red);
         add(white);
@@ -63,6 +74,7 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
         add(foval);
         add(line);
         add(clear);
+        add(spisok);
 
         red.addActionListener(this);
         white.addActionListener(this);
@@ -99,17 +111,58 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
     public void paint(Graphics g) {}
 
     public void mouseDragged(MouseEvent me) {
+        pen1 = Integer.parseInt(spisok.getItem(spisok.getSelectedIndex()));
         if (act==1)
         {
-            int x,y;
-            x = me.getX();
-            y = me.getY();
-                Graphics g = this.getGraphics();
+            if(Objects.equals(spisok.getItem(spisok.getSelectedIndex()), "1"))
+            {
+                int x,y;
+                x = me.getX();
+                y = me.getY();
+                Graphics2D g = (Graphics2D) this.getGraphics();
+                g.setStroke(new BasicStroke(pen1));
                 g.setColor(c);
-                g.drawLine(last_x, last_y, x, y);
+                g.draw(new Line2D.Float(last_x, last_y, x, y));
                 last_x = x;
                 last_y = y;
             }
+            if(Objects.equals(spisok.getItem(spisok.getSelectedIndex()), "5"))
+            {
+                int x,y;
+                x = me.getX();
+                y = me.getY();
+                Graphics2D g = (Graphics2D) this.getGraphics();
+                g.setStroke(new BasicStroke(pen1));
+                g.setColor(c);
+                g.draw(new Line2D.Float(last_x, last_y, x, y));
+                last_x = x;
+                last_y = y;
+            }
+            if(Objects.equals(spisok.getItem(spisok.getSelectedIndex()), "10"))
+            {
+                int x,y;
+                x = me.getX();
+                y = me.getY();
+                Graphics2D g = (Graphics2D) this.getGraphics();
+                g.setStroke(new BasicStroke(pen1));
+                g.setColor(c);
+                g.draw(new Line2D.Float(last_x, last_y, x, y));
+                last_x = x;
+                last_y = y;
+            }
+            if(Objects.equals(spisok.getItem(spisok.getSelectedIndex()), "20"))
+            {
+                int x,y;
+                x = me.getX();
+                y = me.getY();
+                Graphics2D g = (Graphics2D) this.getGraphics();
+                g.setStroke(new BasicStroke(pen1));
+                g.setColor(c);
+                g.draw(new Line2D.Float(last_x, last_y, x, y));
+                last_x = x;
+                last_y = y;
+            }
+        }
     }
 
     public void mouseMoved(MouseEvent me) {}
@@ -118,12 +171,14 @@ public class superpaint extends Applet implements ActionListener, MouseMotionLis
         last_x1 = me.getX();
         last_y1 = me.getY();
         if (act==2) {
-        Graphics g = getGraphics();
-        g.setColor(c);
-        g.drawRect(last_x, last_y, last_x1 - last_x, last_y1 - last_y);
+            Graphics2D g = (Graphics2D) this.getGraphics();
+            g.setStroke(new BasicStroke(pen1));
+            g.setColor(c);
+            g.drawRect(last_x, last_y, last_x1 - last_x, last_y1 - last_y);
         }
         else if (act==3) {
-            Graphics g = getGraphics();
+            Graphics2D g = (Graphics2D) this.getGraphics();
+            g.setStroke(new BasicStroke(pen1));
             g.setColor(c);
             g.drawOval(last_x, last_y, last_x1 - last_x, last_y1 - last_y);
         }
