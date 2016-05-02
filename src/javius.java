@@ -5,16 +5,23 @@ import java.awt.event.*;
 import java.util.Objects;
 
 public class javius extends Applet
-implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelListener, ItemListener, KeyListener, MouseListener {
+implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelListener, ItemListener, KeyListener, MouseListener, Runnable {
     private String msg = "";
     private int x,y,w,h,x1,y1,w1,h1,mx,my,mx1,my1,last_x, last_y;
-    Button Home, UP, DOWN, Left, Right, ChangeSize, Zoomp, Zoomm;
+    Button Home, UP, DOWN, Left, Right, ChangeSize, Zoomp, Zoomm, LR, SS;
     private TextField name_TF, pass_TF, textx, texty, textw, texth;
     private Scrollbar vertSB, horzSB;
     private Checkbox razmer, tust;
     private List spisok;
     Color s,k,o;
     private boolean Accepted = false;
+
+    Thread t1 = null;
+    String name  = "Java ne o4en, java ne o4en ";
+    String name1 = name;
+    boolean st,sp;
+
+
     public void init(){
         setBackground(new Color(20,100,100));
         s= Color.red;
@@ -31,6 +38,9 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
         w1=h1=200;
         mx1=w1/10;
         my1=h1/10;
+
+        st = false;
+        sp = false;
 
         Label name_L = new Label("Name: ");
         Label pass_L = new Label("Password: ");
@@ -72,6 +82,8 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
         Zoomp = new Button("Zoom+");
         Zoomm = new Button("Zoom-");
         ChangeSize = new Button("ChangeSize");
+        LR = new Button("Left/Right");
+        SS = new Button("Start/Stop");
         setLayout(null);
         Home.setBounds(50,30,40,20);
         UP.setBounds(50,10,40,20);
@@ -81,6 +93,9 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
         Zoomp.setBounds(30,80,80,20);
         Zoomm.setBounds(30,100,80,20);
         ChangeSize.setBounds(20,295,100,20);
+
+        LR.setBounds(10,400,65,20);
+        SS.setBounds(10,430,65,20);
 
         name_TF.setBounds(20, 135, 100, 20);
         pass_TF.setBounds(20, 170, 100, 20);
@@ -125,6 +140,8 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
         add(razmer);
         add(tust);
         add(spisok);
+        add(LR);
+        add(SS);
 
         Home.addActionListener(this);
         UP.addActionListener(this);
@@ -134,6 +151,8 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
         Zoomp.addActionListener(this);
         Zoomm.addActionListener(this);
         ChangeSize.addActionListener(this);
+        LR.addActionListener(this);
+        SS.addActionListener(this);
 
         vertSB.addAdjustmentListener(this);
         horzSB.addAdjustmentListener(this);
@@ -172,10 +191,49 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
 
         addKeyListener(this);
         requestFocus();
+
+
     }
+
+    public  void  start() {
+        if (t1 == null)
+            t1 = new Thread(this);
+
+        t1.start();
+    }
+
+    public void run() {
+        while (true) {
+            try {
+                if (Thread.currentThread() == t1) {
+                    if (sp) {
+                        if (st) {
+                            name1 = name1.substring(1) + name1.substring(0, 1);
+                            if(x1 <= getWidth() - w)
+                                x1 += 10;
+                            else
+                                x1 = 10;
+                        } else {
+                            name1 = name1.substring(name1.length()- 1) + name1.substring(0, name1.length() - 1);
+                            if(x1 >= 10)
+                                x1 -= 10;
+                            else
+                                x1 = getWidth() - w;
+                        }
+                    }
+                }
+                Thread.sleep(100);
+                repaint();
+            }
+            catch(InterruptedException e) {
+            }
+        }
+    }
+
 
     public void paint(Graphics g) {
         g.drawString(msg, 120, 30);
+        g.drawString(name1, 10,  480);
        /* x=110;
         y=50;
         w=h=200;
@@ -249,7 +307,6 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
             g.fillRect(x-w/2, y, w, h);
             g.fillRect(x, y-h/2, w, h);
         }
-        
     }
 
     private void move(String m)
@@ -531,6 +588,12 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
             mx = w / 10;
             my = h / 10;
         }
+
+        if(str.equals("Left/Right"))
+            st = !st;
+        if(str.equals("Start/Stop"))
+            sp = !sp;
+
         move(str);
         repaint();
     }
