@@ -649,5 +649,5 @@ public class javius extends Applet
         }
         move(str);
         repaint();
-    }                                                                   //проверка событий
+    }                                                                   //проверка событий.
 }
