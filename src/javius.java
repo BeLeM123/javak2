@@ -5,10 +5,10 @@ import java.awt.event.*;
 import java.util.Objects;
 
 public class javius extends Applet
-implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelListener, ItemListener, KeyListener, MouseListener, Runnable {
+        implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelListener, ItemListener, KeyListener, MouseListener, Runnable {
     private String msg = "";
     private int x,y,w,h,x1,y1,w1,h1,mx,my,mx1,my1,last_x, last_y;
-    Button Home, UP, DOWN, Left, Right, ChangeSize, Zoomp, Zoomm, LR, SS;
+    Button Home, UP, DOWN, Left, Right, ChangeSize, Zoomp, Zoomm, LR, SS, LR2, SS2, UD, UDstart;                        //объявление переменных
     private TextField name_TF, pass_TF, textx, texty, textw, texth;
     private Scrollbar vertSB, horzSB;
     private Checkbox razmer, tust;
@@ -16,14 +16,13 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
     Color s,k,o;
     private boolean Accepted = false;
 
-    Thread t1 = null;
-    String name  = "Java ne o4en, java ne o4en ";
+    Thread t1 = null, t2 = null, t3 = null;
+    String name  = "Random text ";
     String name1 = name;
-    boolean st,sp;
-
+    boolean st,sp,stobj,spobj, upd, upd2;
 
     public void init(){
-        setBackground(new Color(20,100,100));
+        setBackground(new Color(20,100,100));                                                                           //инициализация переменных
         s= Color.red;
         k= Color.red;
         o= Color.yellow;
@@ -41,6 +40,10 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
 
         st = false;
         sp = false;
+        stobj = false;
+        spobj = false;
+        upd = false;
+        upd2 = false;
 
         Label name_L = new Label("Name: ");
         Label pass_L = new Label("Password: ");
@@ -84,6 +87,10 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
         ChangeSize = new Button("ChangeSize");
         LR = new Button("Left/Right");
         SS = new Button("Start/Stop");
+        LR2 = new Button("Leftobj/Rightobj");
+        SS2 = new Button("Startobj/Stopobj");
+        UD = new Button("UP/DOWN");
+        UDstart = new Button("start/stop3");
         setLayout(null);
         Home.setBounds(50,30,40,20);
         UP.setBounds(50,10,40,20);
@@ -96,6 +103,10 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
 
         LR.setBounds(10,400,65,20);
         SS.setBounds(10,430,65,20);
+        LR2.setBounds(80,400,90,20);
+        SS2.setBounds(80,430,90,20);
+        UD.setBounds(180,430,65,20);
+        UDstart.setBounds(180,400,65,20);
 
         name_TF.setBounds(20, 135, 100, 20);
         pass_TF.setBounds(20, 170, 100, 20);
@@ -142,6 +153,11 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
         add(spisok);
         add(LR);
         add(SS);
+        add(LR2);
+        add(SS2);
+        add(UD);
+        add(UDstart);
+
 
         Home.addActionListener(this);
         UP.addActionListener(this);
@@ -153,6 +169,10 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
         ChangeSize.addActionListener(this);
         LR.addActionListener(this);
         SS.addActionListener(this);
+        LR2.addActionListener(this);
+        SS2.addActionListener(this);
+        UD.addActionListener(this);
+        UDstart.addActionListener(this);
 
         vertSB.addAdjustmentListener(this);
         horzSB.addAdjustmentListener(this);
@@ -196,29 +216,59 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
     }
 
     public  void  start() {
-        if (t1 == null)
+        if (t1 == null)                                                                                                 //запуск потоков
             t1 = new Thread(this);
+        if (t2 == null)
+            t2 = new Thread(this);
+        if (t3 == null)
+            t3 = new Thread(this);
 
         t1.start();
+        t2.start();
+        t3.start();
     }
 
-    public void run() {
+    public void run() {                                                                                                 //обработка потоков
         while (true) {
             try {
                 if (Thread.currentThread() == t1) {
                     if (sp) {
                         if (st) {
                             name1 = name1.substring(1) + name1.substring(0, 1);
-                            if(x1 <= getWidth() - w)
+
+                        } else {
+                            name1 = name1.substring(name1.length()- 1) + name1.substring(0, name1.length() - 1);
+                        }
+                    }
+                }
+                if (Thread.currentThread() == t2) {
+                    if (spobj) {
+                        if (stobj) {
+                            if (x1 <= getWidth() - w)
                                 x1 += 10;
                             else
                                 x1 = 10;
-                        } else {
-                            name1 = name1.substring(name1.length()- 1) + name1.substring(0, name1.length() - 1);
-                            if(x1 >= 10)
-                                x1 -= 10;
+                        }
+                            else{
+                                if (x1 >= 10)
+                                    x1 -= 10;
+                                else
+                                    x1 = getWidth() - w;
+                            }
+                        }
+                }
+                if (Thread.currentThread() == t3) {
+                    if (upd2) {
+                        if (upd) {
+                            if (y1 <= getHeight() - h)
+                                y1 += 10;
                             else
-                                x1 = getWidth() - w;
+                                y1 = 10;
+                        } else {
+                            if (y1 >= 10)
+                                y1 -= 10;
+                            else
+                                y1 = getHeight() - h;
                         }
                     }
                 }
@@ -229,7 +279,6 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
             }
         }
     }
-
 
     public void paint(Graphics g) {
         g.drawString(msg, 120, 30);
@@ -307,9 +356,9 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
             g.fillRect(x-w/2, y, w, h);
             g.fillRect(x, y-h/2, w, h);
         }
-    }
+    }                                                                                 //рисунок
 
-    private void move(String m)
+    private void move(String m)                                                                                         //движение по кнопкам
     {
         if (m.equals("UP"))
         {
@@ -371,17 +420,17 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
             my = h / 10;
         }
         repaint();
-    }
+    }                                                        //обработка scrollbar
 
     public void mouseDragged(MouseEvent me) {
         if (tust.getState())
         {
             if (me.getX()>130 && me.getY()>0 && me.getX() < this.getWidth()-w && me.getY() < this.getHeight()-h)
             {
-            x = me.getX();
-            y = me.getY();
-            vertSB.setValue(y);
-            horzSB.setValue(x);
+                x = me.getX();
+                y = me.getY();
+                vertSB.setValue(y);
+                horzSB.setValue(x);
             }
             repaint();
         }
@@ -394,7 +443,7 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
             g.drawLine(last_x, last_y, x, y);
             last_x = x; last_y = y;
         }
-    }
+    }                                                                       //обработка движений мышью
 
     public void mouseMoved(MouseEvent me) {}
     public void mouseExited(MouseEvent me){}
@@ -404,7 +453,7 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
         last_x = me.getX();
         last_y = me.getY();
 
-    }
+    }                                                                        //обработка зажатой мышью
 
     public void mouseClicked(MouseEvent me) {
         if (me.getButton() == MouseEvent.BUTTON2)
@@ -416,7 +465,7 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
             my=h/10;
         }
         repaint();
-    }
+    }                                                                       //обработка нажатий мышью
 
     public void mouseWheelMoved(MouseWheelEvent e) {
         if (e.getWheelRotation()<0)
@@ -435,10 +484,7 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
         repaint();
     }
 
-    public void itemStateChanged(ItemEvent ie) {
-        //repaint();
-    }
-
+    public void itemStateChanged(ItemEvent ie) {}
 
     public void keyPressed(KeyEvent ke) {
 
@@ -510,9 +556,9 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
                 x1 += 10;
         }
         if(x1 >= x && x1 <= (x + w) - 1  && y1 >= y && y1 <= (y + 8 * my) - 1 ||
-        x1 + w >= x + 1 && x1 + w <= (x + w) - 1 && y1 >= y && y1 <= (y + 8 * my) - 1 ||
-        x1 >= x && x1 <= (x + w) - 1 && y1 + 8 * my >= y + 1 && y1 + 8 * my <= (y + 8 * my) ||
-        x1 + w >= x +1 && x1 + w <= (x + w) - 1 && y1 + 8 * my >= y + 1 && y1 + 8 * my <= (y + 8 * my)) {
+                x1 + w >= x + 1 && x1 + w <= (x + w) - 1 && y1 >= y && y1 <= (y + 8 * my) - 1 ||
+                x1 >= x && x1 <= (x + w) - 1 && y1 + 8 * my >= y + 1 && y1 + 8 * my <= (y + 8 * my) ||
+                x1 + w >= x +1 && x1 + w <= (x + w) - 1 && y1 + 8 * my >= y + 1 && y1 + 8 * my <= (y + 8 * my)) {
             s = Color.white;
             k = Color.green;
             o = Color.blue;
@@ -524,16 +570,11 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
             o = Color.yellow;
         }
         repaint();
-    }
+    }                                                                           //обработка нажатий клавиш
 
-    public void keyReleased(KeyEvent ke) {
-        //showStatus("Key Up");
-    }
+    public void keyReleased(KeyEvent ke) {}
 
-    public void keyTyped(KeyEvent ke) {
-        //msg += ke.getKeyChar();
-        //repaint();
-    }
+    public void keyTyped(KeyEvent ke) {}
 
     public void actionPerformed(ActionEvent ae) {
         String str = ae.getActionCommand();
@@ -588,13 +629,25 @@ implements ActionListener, AdjustmentListener, MouseMotionListener, MouseWheelLi
             mx = w / 10;
             my = h / 10;
         }
-
-        if(str.equals("Left/Right"))
+        if(str.equals("Left/Right")) {
             st = !st;
-        if(str.equals("Start/Stop"))
+        }
+        if(str.equals("Start/Stop")) {
             sp = !sp;
-
+        }
+        if(str.equals("Leftobj/Rightobj")) {
+            stobj = !stobj;
+        }
+        if(str.equals("Startobj/Stopobj")) {
+            spobj = !spobj;
+        }
+        if(str.equals("UP/DOWN")) {
+            upd = !upd;
+        }
+        if(str.equals("start/stop3")) {
+            upd2 = !upd2;
+        }
         move(str);
         repaint();
-    }
+    }                                                                   //проверка событий
 }
